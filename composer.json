@@ -1,0 +1,22 @@
+{
+  "name": "elmasry/php0mvc",
+  "autoload": {
+    "psr-4": {
+      "Elmasry\\": "src/",
+      "App\\": "App/"
+    },
+    "files": [
+      "src/Support/helper.php"
+    ]
+  },
+  "authors": [
+    {
+      "name": "Faris Elmasry",
+      "email": "ggffccoco@gmail.com"
+    }
+  ],
+  "require": {
+    "vlucas/phpdotenv": "^5.6",
+    "symfony/var-dumper": "^8.0"
+  }
+}
