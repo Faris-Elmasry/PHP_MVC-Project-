@@ -1,0 +1,357 @@
+ 
+
+---
+
+# 📄 Arr.php – Quick Reference
+
+---
+
+## `Arr::only($array, $keys)`
+
+**بياخد:**
+
+* `$array` → array أصلي
+* `$keys` → key أو array keys
+
+**بيعمل:**
+➡ يرجّع array بالمفاتيح دي بس
+
+```php
+Arr::only($data, ['name','email']);
+```
+
+---
+
+## `Arr::accessible($value)`
+
+**بياخد:**
+
+* أي value
+
+**بيعمل:**
+➡ يشوف ينفع يتعامل معاه كـ array ولا لأ
+
+```php
+Arr::accessible($data); // true / false
+```
+
+---
+
+## `Arr::exists($array, $key)`
+
+**بياخد:**
+
+* `$array`
+* `$key`
+
+**بيعمل:**
+➡ يتأكد إن المفتاح موجود (حتى لو قيمته null)
+
+```php
+Arr::exists($data, 'name');
+```
+
+---
+
+## `Arr::set(&$array, $key, $value)`
+
+**بياخد:**
+
+* `$array` (by reference)
+* `$key` (dot notation)
+* `$value`
+
+**بيعمل:**
+➡ يحط قيمة جوه array متداخلة
+
+```php
+Arr::set($data, 'user.profile.name', 'Faris');
+```
+
+---
+
+## `Arr::add($array, $key, $value)`
+
+**بياخد:**
+
+* `$array`
+* `$key`
+* `$value`
+
+**بيعمل:**
+➡ يحط القيمة **بس لو المفتاح مش موجود**
+
+```php
+Arr::add($data, 'role', 'admin');
+```
+
+---
+
+## `Arr::except($array, $keys)`
+
+**بياخد:**
+
+* `$array`
+* `$keys`
+
+**بيعمل:**
+➡ يرجّع array من غير المفاتيح دي
+
+```php
+Arr::except($data, ['password']);
+```
+
+---
+
+## `Arr::first($array, $callback = null, $default = null)`
+
+**بياخد:**
+
+* `$array`
+* `$callback` (اختياري)
+* `$default`
+
+**بيعمل:**
+➡ يرجّع أول عنصر
+أو أول عنصر يحقق شرط
+
+```php
+Arr::first($users, fn($u) => $u['active']);
+```
+
+---
+
+## `Arr::has($array, $keys)`
+
+**بياخد:**
+
+* `$array`
+* `$keys` (string أو array – dot notation)
+
+**بيعمل:**
+➡ يتأكد إن المفتاح/المفاتيح موجودين (حتى nested)
+
+```php
+Arr::has($data, 'user.profile.name');
+```
+
+---
+
+## `Arr::last($array, $callback = null, $default = null)`
+
+**بياخد:**
+
+* `$array`
+* `$callback` (اختياري)
+* `$default`
+
+**بيعمل:**
+➡ يرجّع آخر عنصر
+أو آخر عنصر يحقق شرط
+
+```php
+Arr::last($logs);
+```
+
+---
+
+## `Arr::flatten($array, $depth = INF)`
+
+**بياخد:**
+
+* `$array`
+* `$depth` (اختياري)
+
+**بيعمل:**
+➡ يفرد array متداخلة
+
+```php
+Arr::flatten([1,[2,[3]]]); // [1,2,3]
+```
+
+---
+
+## `Arr::forget(&$array, $keys)`
+
+**بياخد:**
+
+* `$array` (by reference)
+* `$keys` (dot notation)
+
+**بيعمل:**
+➡ يحذف key حتى لو nested
+
+```php
+Arr::forget($data, 'user.password');
+```
+
+---
+
+## `Arr::get($array, $key, $default = null)`
+
+**بياخد:**
+
+* `$array`
+* `$key` (dot notation)
+* `$default`
+
+**بيعمل:**
+➡ يرجّع القيمة بأمان
+➡ من غير errors
+➡ default لو مش موجود
+
+```php
+Arr::get($data, 'settings.theme', 'light');
+```
+
+---
+
+# 🧠 الخلاصة في سطر واحد
+
+> **Arr = أدوات ذكية للتحكم في الداتا
+> بدل ما تسيب الداتا تتحكم فيك**
+
+ 
+
+ -------------------------------------
+ }config.php
+
+ – Cheat Sheet سريع
+
+نفترض:
+
+$config = new Config([
+    'app' => [
+        'name' => 'SecTheater',
+        'debug' => true,
+    ],
+    'db' => [
+        'host' => 'localhost',
+        'ports' => [3306],
+    ],
+]);
+
+__construct($items)
+
+بياخد: array
+بيعمل: يخزن كل الإعدادات جوه الكلاس
+
+new Config($items);
+
+has($keys)
+
+بياخد: key أو array keys (dot notation)
+بيعمل: يشوف الإعداد موجود ولا لأ
+
+$config->has('db.host'); // true
+
+get($key, $default = null)
+
+بياخد:
+
+key واحد
+
+أو array keys
+
+بيعمل: يرجّع القيمة بأمان
+
+$config->get('app.name'); 
+
+getMany($keys)
+
+بياخد: array مفاتيح
+بيعمل: يرجّع أكتر من config مرة واحدة
+
+$config->getMany([
+    'app.name',
+    'db.host' => '127.0.0.1',
+]);
+
+set($key, $value = null)
+
+بياخد:
+
+key واحد
+
+أو array keys
+
+بيعمل: يغيّر أو يضيف config
+
+$config->set('app.debug', false);
+
+push($key, $value)
+
+بياخد:
+
+key array
+
+value
+
+بيعمل: يضيف عنصر لجوه array config
+
+$config->push('db.ports', 3307);
+
+all()
+
+بياخد: ولا حاجة
+بيعمل: يرجّع كل الإعدادات
+
+$config->all();
+
+exists($key)
+
+بياخد: key
+بيعمل: يتأكد إن المفتاح موجود (حتى لو null)
+
+$config->exists('app.debug');
+
+🧩 ArrayAccess (استخدامه كأنه array)
+offsetGet($offset)
+
+بيشتغل لما تعمل:
+
+$config['app.name'];
+
+
+بيعمل: يرجّع قيمة config
+
+offsetSet($offset, $value)
+
+بيشتغل لما تعمل:
+
+$config['app.debug'] = true;
+
+
+بيعمل: يغيّر القيمة
+
+offsetExists($offset)
+
+بيشتغل لما تعمل:
+
+isset($config['app.name']);
+
+
+بيعمل: يشوف المفتاح موجود ولا لأ
+
+offsetUnset($offset)
+
+بيشتغل لما تعمل:
+
+unset($config['app.debug']);
+
+
+بيعمل: يحذف المفتاح
+
+
+//plural from stack over flow to get all property about use
+//self::intance 
+//self::Class 
+
+
+
+
+
+
+https://www.phptutorial.net/php-tutorial/php-csrf/
+https://stackoverflow.com/questions/60174/how-can-i-prevent-sql-injection-in-php
+https://stackoverflow.com/questions/1996122/how-can-i-prevent-xss-with-html-php

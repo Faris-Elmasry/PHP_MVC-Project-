@@ -1,0 +1,8 @@
+php database/migrate.php              # Run pending migrations
+php database/migrate.php --seed       # Run migrations + seed
+php database/migrate.php --seed-only  # Only seed (no migrations)
+php database/migrate.php --rollback   # Rollback last batch
+php database/migrate.php --reset      # Rollback all
+php database/migrate.php --refresh    # Reset + re-migrate
+php database/migrate.php --refresh --seed  # Fresh database with seed
+php database/migrate.php --status     # Show migration status
