@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Models\Invoice;
 use App\Models\Product;
+use App\Models\User;
 use Elmasry\Support\Session;
 use Elmasry\Validation\Validator;
 use App\Models\InvoiceItem;
@@ -55,8 +56,12 @@ class InvoiceController
     public function create()
     {
         $products = Product::all();
+        $users = User::all();
         
-        return view('invoices.create', ['products' => $products]);
+        return view('invoices.create', [
+            'products' => $products,
+            'users' => $users
+        ]);
     }
     
     /**
@@ -67,8 +72,7 @@ class InvoiceController
         // Validate
         $v = new Validator();
         $v->setRules([
-            'user_id' => 'required|numeric',
-            'items' => 'required'
+            'user_id' => 'required|numeric'
         ]);
         
         $v->make(request()->all());
@@ -78,8 +82,22 @@ class InvoiceController
             return back();
         }
         
-        // Parse items (expecting JSON or array)
-        $items = json_decode(request()->get('items'), true);
+        // Get form arrays
+        $products = request()->get('products') ?? [];
+        $quantities = request()->get('quantities') ?? [];
+        $prices = request()->get('prices') ?? [];
+        
+        // Build items array
+        $items = [];
+        for ($i = 0; $i < count($products); $i++) {
+            if (!empty($products[$i]) && !empty($quantities[$i])) {
+                $items[] = [
+                    'product_id' => $products[$i],
+                    'quantity' => $quantities[$i],
+                    'price' => $prices[$i] ?? 0
+                ];
+            }
+        }
         
         if (empty($items)) {
             $this->session->setFlash('errors', ['items' => ['Please add at least one item.']]);
@@ -124,6 +142,96 @@ class InvoiceController
             
         } catch (\Exception $e) {
             $this->session->setFlash('errors', ['general' => ['Failed to delete invoice.']]);
+            return back();
+        }
+    }
+
+    /**
+     * Show edit form
+     */
+    public function edit($id)
+    {
+        $invoice = Invoice::findWithUser($id);
+        
+        if (!$invoice) {
+            $this->session->setFlash('errors', ['general' => ['Invoice not found.']]);
+            header('Location: /invoices');
+            exit;
+        }
+        
+        $items = Invoice::getItems($id);
+        $products = Product::all();
+        $users = User::all();
+        
+        return view('invoices.edit', [
+            'invoice' => $invoice,
+            'items' => $items,
+            'products' => $products,
+            'users' => $users
+        ]);
+    }
+
+    /**
+     * Update invoice
+     */
+    public function update($id)
+    {
+        // Validate
+        $v = new Validator();
+        $v->setRules([
+            'user_id' => 'required|numeric'
+        ]);
+        
+        $v->make(request()->all());
+        
+        if (!$v->passes()) {
+            $this->session->setFlash('errors', $v->errors());
+            return back();
+        }
+        
+        try {
+            // Get form data
+            $products = request()->get('products') ?? [];
+            $quantities = request()->get('quantities') ?? [];
+            $prices = request()->get('prices') ?? [];
+            $paid = request()->get('paid') ? 1 : 0;
+            
+            // Delete old items
+            $oldItems = Invoice::getItems($id);
+            foreach ($oldItems as $item) {
+                InvoiceItem::delete($item['id']);
+            }
+            
+            // Calculate new total and create items
+            $total = 0;
+            for ($i = 0; $i < count($products); $i++) {
+                if (!empty($products[$i]) && !empty($quantities[$i])) {
+                    $price = $prices[$i] ?? 0;
+                    $quantity = $quantities[$i];
+                    $total += $price * $quantity;
+                    
+                    InvoiceItem::create([
+                        'invoice_id' => $id,
+                        'product_id' => $products[$i],
+                        'quantity' => $quantity,
+                        'price' => $price
+                    ]);
+                }
+            }
+            
+            // Update invoice
+            Invoice::update($id, [
+                'user_id' => request()->get('user_id'),
+                'total_amount' => $total,
+                'paid' => $paid
+            ]);
+            
+            $this->session->setFlash('success', 'Invoice updated successfully!');
+            header("Location: /invoices/{$id}");
+            exit;
+            
+        } catch (\Exception $e) {
+            $this->session->setFlash('errors', ['general' => ['Failed to update invoice: ' . $e->getMessage()]]);
             return back();
         }
     }

@@ -8,7 +8,7 @@ use Elmasry\Database\Database;
 class Invoice extends Model
 {
     protected static $table = 'invoices';
-    protected static $fillable = ['user_id', 'total_amount'];
+    protected static $fillable = ['user_id', 'total_amount', 'paid'];
     
   
     public static function findWithUser($id)

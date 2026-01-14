@@ -10,6 +10,7 @@ use App\Controller\InvoiceController;
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/home', [HomeController::class, 'index']); 
+Route::get('/dashboard', [HomeController::class, 'dashboard']); 
 
 //registration routes
 Route::get('/signup', [RegisterController::class, 'index']); 
