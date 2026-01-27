@@ -1,8 +1,8 @@
 <?php
 
-namespace SecTheater\Validation\Rules;
+namespace Elmasry\Validation\Rules;
 
-use SecTheater\Validation\Rules\Contract\Rule;
+use Elmasry\Validation\Rules\Contract\Rule;
 
 class EmailRule implements Rule
 {

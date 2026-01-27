@@ -1,8 +1,6 @@
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="/">
-      <img src="../../" width="20" height="28">
-    </a>
+
 
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
       <span aria-hidden="true"></span>
@@ -13,32 +11,36 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item" href="/">
-        Home
-      </a>
 
       <a class="navbar-item" href="./dashboard">
-   Dashboard
+        dashboard
       </a>
       <a class="navbar-item" href="./products">
-   products
+        products
       </a>
       <a class="navbar-item" href="./invoices">
-   invoices
+        invoices
       </a>
 
- 
+
     </div>
 
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary" href="/signup">
-            <strong>Sign up</strong>
-          </a>
-          <a class="button is-light" href="/login">
-            Log in
-          </a>
+          <?php if (!isset($_SESSION['user_id'])): ?>
+            <a class="button is-primary" href="/signup">
+              <strong>Sign up</strong>
+            </a>
+            <a class="button is-light" href="/login">
+              Log in
+            </a>
+          <?php else: ?>
+            <a class="button is-danger" href="/logout">
+              Log out
+            </a>
+          <?php endif; ?>
+
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace SecTheater\Validation\Rules\Contract;
+namespace Elmasry\Validation\Rules\Contract;
 
 interface Rule extends \Stringable
 {

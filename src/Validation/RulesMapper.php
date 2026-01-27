@@ -1,21 +1,19 @@
 <?php
 
-namespace SecTheater\Validation;
+namespace Elmasry\Validation;
 
-// use SecTheater\Validation\Rules\MaxRule;
-use SecTheater\Validation\Rules\EmailRule;
-use SecTheater\Validation\Rules\UniqueRule;
-use SecTheater\Validation\Rules\BetweenRule;
-use SecTheater\Validation\Rules\AlphaNumRule;
-use SecTheater\Validation\Rules\RequiredRule;
-use SecTheater\Validation\Rules\ConfirmedRule;
+use Elmasry\Validation\Rules\EmailRule;
+use Elmasry\Validation\Rules\UniqueRule;
+use Elmasry\Validation\Rules\BetweenRule;
+use Elmasry\Validation\Rules\AlphaNumRule;
+use Elmasry\Validation\Rules\RequiredRule;
+use Elmasry\Validation\Rules\ConfirmedRule;
 
 trait RulesMapper
 {
     protected static array $map = [
         'required' => RequiredRule::class,
         'alnum' => AlphaNumRule::class,
-        // 'max' => MaxRule::class,
         'between' => BetweenRule::class,
         'email' => EmailRule::class,
         'confirmed' => ConfirmedRule::class,

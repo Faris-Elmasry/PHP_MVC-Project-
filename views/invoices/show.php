@@ -1,30 +1,39 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-?>
+<style>
+    body {
+        background-color: #f5f5f5;
+        padding: 20px;
+    }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice #<?= $invoice['id'] ?? ''; ?></title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { background-color: #f5f5f5; padding: 20px; }
-        .invoice-header { border-bottom: 2px solid #3273dc; padding-bottom: 20px; margin-bottom: 20px; }
-        .tag.is-paid { background-color: #48c774; color: white; }
-        .tag.is-unpaid { background-color: #f14668; color: white; }
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white; }
-            .box { box-shadow: none; }
+    .invoice-header {
+        border-bottom: 2px solid #3273dc;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+    .tag.is-paid {
+        background-color: #48c774;
+        color: white;
+    }
+
+    .tag.is-unpaid {
+        background-color: #f14668;
+        color: white;
+    }
+
+    @media print {
+        .no-print {
+            display: none !important;
         }
-    </style>
-</head>
-<body>
+
+        body {
+            background: white;
+        }
+
+        .box {
+            box-shadow: none;
+        }
+    }
+</style>
 
 <div class="container">
     <div class="box">
@@ -47,7 +56,8 @@ if (session_status() === PHP_SESSION_NONE) {
                         <span>Edit</span>
                     </a>
                     <form method="POST" action="/invoices/<?= $invoice['id']; ?>/delete" style="display: inline;">
-                        <button type="submit" class="button is-danger" onclick="return confirm('Are you sure you want to delete this invoice?')">
+                        <button type="submit" class="button is-danger"
+                            onclick="return confirm('Are you sure you want to delete this invoice?')">
                             <span class="icon"><i class="fas fa-trash"></i></span>
                             <span>Delete</span>
                         </button>
@@ -106,16 +116,16 @@ if (session_status() === PHP_SESSION_NONE) {
                             <td><?= htmlspecialchars($invoice['user_email'] ?? 'N/A'); ?></td>
                         </tr>
                         <?php if (!empty($invoice['user_phone'])): ?>
-                        <tr>
-                            <th>Phone:</th>
-                            <td><?= htmlspecialchars($invoice['user_phone']); ?></td>
-                        </tr>
+                            <tr>
+                                <th>Phone:</th>
+                                <td><?= htmlspecialchars($invoice['user_phone']); ?></td>
+                            </tr>
                         <?php endif; ?>
                         <?php if (!empty($invoice['user_address'])): ?>
-                        <tr>
-                            <th>Address:</th>
-                            <td><?= htmlspecialchars($invoice['user_address']); ?></td>
-                        </tr>
+                            <tr>
+                                <th>Address:</th>
+                                <td><?= htmlspecialchars($invoice['user_address']); ?></td>
+                            </tr>
                         <?php endif; ?>
                     </table>
                 </div>
@@ -164,13 +174,13 @@ if (session_status() === PHP_SESSION_NONE) {
                 </tr>
             </thead>
             <tbody>
-                <?php 
+                <?php
                 $subtotal = 0;
                 $itemNum = 1;
-                foreach ($items ?? [] as $item): 
+                foreach ($items ?? [] as $item):
                     $itemTotal = $item['price'] * $item['quantity'];
                     $subtotal += $itemTotal;
-                ?>
+                    ?>
                     <tr>
                         <td><?= $itemNum++; ?></td>
                         <td>
@@ -189,7 +199,9 @@ if (session_status() === PHP_SESSION_NONE) {
                 </tr>
                 <tr class="has-background-primary-light">
                     <td colspan="4" class="has-text-right"><strong class="is-size-5">Total Amount:</strong></td>
-                    <td class="has-text-right"><strong class="is-size-5"><?= number_format($invoice['total_amount'] ?? $subtotal, 2); ?> EGP</strong></td>
+                    <td class="has-text-right"><strong
+                            class="is-size-5"><?= number_format($invoice['total_amount'] ?? $subtotal, 2); ?>
+                            EGP</strong></td>
                 </tr>
             </tfoot>
         </table>
@@ -203,6 +215,3 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </div>
-
-</body>
-</html>

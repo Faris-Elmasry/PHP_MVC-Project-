@@ -10,12 +10,16 @@ use Elmasry\Validation\Validator;
 class ProductController
 {
     protected $session;
-    
+
     public function __construct()
     {
         $this->session = new Session();
+        if (!$this->session->has('is_authenticated')) {
+            header('Location: /login');
+            exit;
+        }
     }
-    
+
     /**
      * Display all products
      */
@@ -23,10 +27,10 @@ class ProductController
     {
         $page = $_GET['page'] ?? 1;
         $products = Product::paginate(10, $page);
-        
+
         return view('products.index', ['products' => $products]);
     }
-    
+
     /**
      * Show create form
      */
@@ -34,7 +38,7 @@ class ProductController
     {
         return view('products.create');
     }
-    
+
     /**
      * Store new product
      */
@@ -47,15 +51,15 @@ class ProductController
             'price' => 'required|numeric',
             'vat' => 'required|numeric'
         ]);
-        
+
         $v->make(request()->all());
-        
+
         if (!$v->passes()) {
             $this->session->setFlash('errors', $v->errors());
             $this->session->setFlash('old', request()->all());
             return back();
         }
-        
+
         // Create product
         try {
             Product::create([
@@ -63,33 +67,33 @@ class ProductController
                 'price' => request()->get('price'),
                 'vat' => request()->get('vat')
             ]);
-            
+
             $this->session->setFlash('success', 'Product created successfully!');
             header('Location: /products');
             exit;
-            
+
         } catch (\Exception $e) {
             $this->session->setFlash('errors', ['general' => ['Failed to create product.']]);
             return back();
         }
     }
-    
+
     /**
      * Show edit form
      */
     public function edit($id)
     {
         $product = Product::find($id);
-        
+
         if (!$product) {
             $this->session->setFlash('errors', ['general' => ['Product not found.']]);
             header('Location: /products');
             exit;
         }
-        
+
         return view('products.edit', ['product' => $product]);
     }
-    
+
     /**
      * Update product
      */
@@ -102,15 +106,15 @@ class ProductController
             'price' => 'required|numeric',
             'vat' => 'required|numeric'
         ]);
-        
+
         $v->make(request()->all());
-        
+
         if (!$v->passes()) {
             $this->session->setFlash('errors', $v->errors());
             $this->session->setFlash('old', request()->all());
             return back();
         }
-        
+
         // Update product
         try {
             Product::update($id, [
@@ -118,17 +122,17 @@ class ProductController
                 'price' => request()->get('price'),
                 'vat' => request()->get('vat')
             ]);
-            
+
             $this->session->setFlash('success', 'Product updated successfully!');
             header('Location: /products');
             exit;
-            
+
         } catch (\Exception $e) {
             $this->session->setFlash('errors', ['general' => ['Failed to update product.']]);
             return back();
         }
     }
-    
+
     /**
      * Delete product
      */
@@ -136,17 +140,17 @@ class ProductController
     {
         try {
             Product::delete($id);
-            
+
             $this->session->setFlash('success', 'Product deleted successfully!');
             header('Location: /products');
             exit;
-            
+
         } catch (\Exception $e) {
             $this->session->setFlash('errors', ['general' => ['Failed to delete product.']]);
             return back();
         }
     }
-    
+
     /**
      * Search products
      */
@@ -154,7 +158,7 @@ class ProductController
     {
         $query = request()->get('q', '');
         $products = Product::search($query);
-        
+
         return view('products.index', ['products' => ['data' => $products]]);
     }
 }

@@ -18,7 +18,7 @@
 8. [Senior-Level Summary](#8-senior-level-summary)
 9. [Laravel Preparation Roadmap](#9-laravel-preparation-roadmap)
 
----
+-----------------------------------------------------------
 
 ## 1. Project Overview
 

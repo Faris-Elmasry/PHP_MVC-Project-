@@ -1,24 +1,19 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-?>
+<style>
+    body {
+        background-color: #f5f5f5;
+        padding: 20px;
+    }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoices</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { background-color: #f5f5f5; padding: 20px; }
-        .tag.is-paid { background-color: #48c774; color: white; }
-        .tag.is-unpaid { background-color: #f14668; color: white; }
-    </style>
-</head>
-<body>
+    .tag.is-paid {
+        background-color: #48c774;
+        color: white;
+    }
+
+    .tag.is-unpaid {
+        background-color: #f14668;
+        color: white;
+    }
+</style>
 
 <div class="container">
     <div class="box">
@@ -65,10 +60,10 @@ if (session_status() === PHP_SESSION_NONE) {
                 </tr>
             </thead>
             <tbody>
-                <?php 
+                <?php
                 $invoiceList = $invoices['data'] ?? $invoices ?? [];
-                if (empty($invoiceList)): 
-                ?>
+                if (empty($invoiceList)):
+                    ?>
                     <tr>
                         <td colspan="6" class="has-text-centered">No invoices found.</td>
                     </tr>
@@ -97,7 +92,8 @@ if (session_status() === PHP_SESSION_NONE) {
                                     <span class="icon"><i class="fas fa-edit"></i></span>
                                 </a>
                                 <form method="POST" action="/invoices/<?= $invoice['id']; ?>/delete" style="display: inline;">
-                                    <button type="submit" class="button is-small is-danger" onclick="return confirm('Are you sure?')" title="Delete">
+                                    <button type="submit" class="button is-small is-danger"
+                                        onclick="return confirm('Are you sure?')" title="Delete">
                                         <span class="icon"><i class="fas fa-trash"></i></span>
                                     </button>
                                 </form>
@@ -109,6 +105,3 @@ if (session_status() === PHP_SESSION_NONE) {
         </table>
     </div>
 </div>
-
-</body>
-</html>

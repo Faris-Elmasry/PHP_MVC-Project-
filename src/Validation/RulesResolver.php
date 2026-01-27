@@ -1,6 +1,6 @@
 <?php
 
-namespace SecTheater\Validation;
+namespace Elmasry\Validation;
 
 trait RulesResolver
 {
@@ -21,9 +21,10 @@ trait RulesResolver
 
     public static function getRuleFromString(string $rule)
     {
-        return RulesMapper::resolve(
-            ($exploded = explode(':', $rule))[0],
-            explode(',', end($exploded))
-        );
+        $exploded = explode(':', $rule);
+        $ruleName = $exploded[0];
+        $options = isset($exploded[1]) ? explode(',', $exploded[1]) : [];
+
+        return RulesMapper::resolve($ruleName, $options);
     }
 }

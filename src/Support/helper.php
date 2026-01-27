@@ -3,10 +3,10 @@
 // Helper functions - NO namespace (these are global functions)
 
 use Elmasry\Http\Request;
- use Elmasry\Http\Response;
- use Elmasry\View\View;
- use  Elmasry\Application;
- 
+use Elmasry\Http\Response;
+use Elmasry\View\View;
+use Elmasry\Application;
+
 if (!function_exists('env')) {
     function env($key, $default = null)
     {
@@ -42,22 +42,21 @@ if (!function_exists('view')) {
     }
 }
 
-if (!function_exists('app')){
+if (!function_exists('app')) {
 
-    function app(){
-
+    function app()
+    {
         //static for holding the values in all places not changing
-     static $instance = null;
+        static $instance = null;
 
-    if (!$instance){
-        return $instance = new Application;
+        if (!$instance) {
+            return $instance = new Application;
+        }
+        return $instance;
     }
-    return $instance;
-    }
-
 }
 
-    if (!function_exists('config')) {
+if (!function_exists('config')) {
     function config($key = null, $default = null)
     {
         if (is_null($key)) {
@@ -79,42 +78,50 @@ if (!function_exists('config_path')) {
     }
 }
 
-if (!function_exists('old')){
-function old($key){
-if(app()->session->hasflash('old')){
-return app()->session->getFlash('old'[$key]);
-}
-    
-}
+if (!function_exists('old')) {
+    function old($key)
+    {
+        if (app()->session->hasflash('old')) {
+            $oldData = app()->session->getFlash('old');
+            // Assuming old data is an array
+            return $oldData[$key] ?? null;
+        }
+        return null;
+    }
 }
 
-
-if (!function_exists('back')){
-
-}
 if (!function_exists('request')) {
 
     function request($key = null)
     {
         $instance = new Request();
 
-        // لو Array
+        // If Array
         if (is_array($key)) {
             return $instance->only($key);
         }
 
-        // لو String
+        // If String
         if ($key !== null) {
             return $instance->get($key);
         }
 
-        // لو مفيش حاجة
+        // If nothing
         return $instance;
     }
 }
 
-if (!function_exists('back')){
-function back(){
-return (new Response())->back();
+if (!function_exists('back')) {
+    function back()
+    {
+        return (new Response())->back();
+    }
 }
+
+if (!function_exists('redirect')) {
+    function redirect($path)
+    {
+        header("Location: {$path}");
+        exit;
+    }
 }

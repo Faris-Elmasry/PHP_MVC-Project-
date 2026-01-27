@@ -1,11 +1,4 @@
-<?php
- 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-?>
-
-<div class="container"> 
+<div class="container">
 
     <!-- Success Message -->
     <?php if (app()->session->hasFlash('success')): ?>
@@ -21,7 +14,7 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     <?php endif; ?>
 
- 
+
 
     <form method="POST" action="/login">
 
@@ -29,20 +22,17 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="field">
             <label class="label">Email</label>
             <div class="control">
-                <input 
-                    class="input <?php 
-                        $errors = app()->session->getFlash('errors');
-                        echo (is_array($errors) && isset($errors['email'])) ? 'is-danger' : ''; 
-                    ?>" 
-                    type="email" 
-                    name="email" 
+                <input class="input <?php
+                $errors = app()->session->getFlash('errors');
+                echo (is_array($errors) && isset($errors['email'])) ? 'is-danger' : '';
+                ?>" type="email" name="email"
                     value="<?= htmlspecialchars(app()->session->getFlash('old')['email'] ?? ''); ?>"
                     placeholder="Enter your email">
             </div>
-            <?php 
+            <?php
             $errors = app()->session->getFlash('errors');
-            if (is_array($errors) && isset($errors['email'])): 
-            ?>
+            if (is_array($errors) && isset($errors['email'])):
+                ?>
                 <p class="help is-danger">
                     <?= htmlspecialchars($errors['email'][0]); ?>
                 </p>
@@ -53,19 +43,15 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="field">
             <label class="label">Password</label>
             <div class="control">
-                <input 
-                    class="input <?php 
-                        $errors = app()->session->getFlash('errors');
-                        echo (is_array($errors) && isset($errors['password'])) ? 'is-danger' : ''; 
-                    ?>" 
-                    type="password" 
-                    name="password"
-                    placeholder="Enter your password">
+                <input class="input <?php
+                $errors = app()->session->getFlash('errors');
+                echo (is_array($errors) && isset($errors['password'])) ? 'is-danger' : '';
+                ?>" type="password" name="password" placeholder="Enter your password">
             </div>
-            <?php 
+            <?php
             $errors = app()->session->getFlash('errors');
-            if (is_array($errors) && isset($errors['password'])): 
-            ?>
+            if (is_array($errors) && isset($errors['password'])):
+                ?>
                 <p class="help is-danger">
                     <?= htmlspecialchars($errors['password'][0]); ?>
                 </p>
@@ -97,13 +83,13 @@ if (session_status() === PHP_SESSION_NONE) {
     <?php if (isset($_GET['debug'])): ?>
         <div class="box mt-4">
             <h3 class="title is-5">Debug Info:</h3>
-            <pre><?php 
-                echo "Session Data:\n";
-                print_r($_SESSION); 
-                echo "\n\nFlash Errors:\n";
-                print_r(app()->session->getFlash('errors'));
-                echo "\n\nFlash Old:\n";
-                print_r(app()->session->getFlash('old'));
+            <pre><?php
+            echo "Session Data:\n";
+            print_r($_SESSION);
+            echo "\n\nFlash Errors:\n";
+            print_r(app()->session->getFlash('errors'));
+            echo "\n\nFlash Old:\n";
+            print_r(app()->session->getFlash('old'));
             ?></pre>
         </div>
     <?php endif; ?>

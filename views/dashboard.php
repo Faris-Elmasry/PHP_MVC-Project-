@@ -1,28 +1,27 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-?>
+<style>
+    body {
+        background-color: #f5f5f5;
+        padding: 20px;
+    }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { background-color: #f5f5f5; padding: 20px; }
-        .stat-card { transition: transform 0.2s; }
-        .stat-card:hover { transform: translateY(-5px); }
-        .stat-icon { font-size: 2.5rem; opacity: 0.8; }
-        .stat-value { font-size: 2.5rem; font-weight: bold; }
-    </style>
-</head>
-<body>
+    .stat-card {
+        transition: transform 0.2s;
+    }
 
-<?php include __DIR__ . '/partials/navbar.php'; ?>
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-icon {
+        font-size: 2.5rem;
+        opacity: 0.8;
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+</style>
 
 <div class="container mt-5">
     <h1 class="title is-2">
@@ -48,9 +47,9 @@ if (session_status() === PHP_SESSION_NONE) {
                         </span>
                     </div>
                 </div>
-                <a href="/signup" class="button is-primary is-small is-outlined">
+                <a href="/clients" class="button is-primary is-small is-outlined">
                     <span class="icon"><i class="fas fa-plus"></i></span>
-                    <span>Add User</span>
+                    <span>Manage User</span>
                 </a>
             </div>
         </div>
@@ -73,7 +72,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
                 <a href="/products" class="button is-info is-small is-outlined">
                     <span class="icon"><i class="fas fa-eye"></i></span>
-                    <span>View Products</span>
+                    <span>Manage Products</span>
                 </a>
             </div>
         </div>
@@ -96,7 +95,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
                 <a href="/invoices" class="button is-warning is-small is-outlined">
                     <span class="icon"><i class="fas fa-eye"></i></span>
-                    <span>View Invoices</span>
+                    <span>Manage Invoices</span>
                 </a>
             </div>
         </div>
@@ -269,13 +268,10 @@ if (session_status() === PHP_SESSION_NONE) {
                 <span class="icon"><i class="fas fa-plus"></i></span>
                 <span>New Product</span>
             </a>
-            <a href="/signup" class="button is-success">
+            <a href="/clients/" class="button is-success">
                 <span class="icon"><i class="fas fa-user-plus"></i></span>
                 <span>New User</span>
             </a>
         </div>
     </div>
 </div>
-
-</body>
-</html>
