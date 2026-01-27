@@ -268,7 +268,7 @@
                 <span class="icon"><i class="fas fa-plus"></i></span>
                 <span>New Product</span>
             </a>
-            <a href="/clients/" class="button is-success">
+            <a href="/clients/create" class="button is-success">
                 <span class="icon"><i class="fas fa-user-plus"></i></span>
                 <span>New User</span>
             </a>

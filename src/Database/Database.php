@@ -13,12 +13,16 @@ class Database
     /**
      * Prevent direct instantiation
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Prevent cloning
      */
-    private function __clone() {}
+    private function __clone()
+    {
+    }
 
     /**
      * Initialize database configuration
@@ -51,7 +55,7 @@ class Database
 
         try {
             $driver = self::$config['driver'] ?? 'sqlite';
-            
+
             if ($driver === 'sqlite') {
                 $dsn = "sqlite:" . self::$config['database'];
                 $pdo = new PDO($dsn);
@@ -69,7 +73,7 @@ class Database
                 );
                 $pdo = new PDO(
                     $dsn,
-          
+
                     self::$config['password'] ?? ''
                 );
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
