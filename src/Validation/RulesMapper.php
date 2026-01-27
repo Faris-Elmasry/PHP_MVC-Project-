@@ -9,7 +9,7 @@ use Elmasry\Validation\Rules\AlphaNumRule;
 use Elmasry\Validation\Rules\RequiredRule;
 use Elmasry\Validation\Rules\ConfirmedRule;
 
-trait RulesMapper
+class RulesMapper
 {
     protected static array $map = [
         'required' => RequiredRule::class,

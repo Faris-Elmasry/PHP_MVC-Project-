@@ -20,8 +20,8 @@ class Migrator
     {
         Database::statement("
             CREATE TABLE IF NOT EXISTS {$this->migrationsTable} (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                migration TEXT NOT NULL,
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                migration VARCHAR(255) NOT NULL,
                 batch INTEGER NOT NULL,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
@@ -146,7 +146,7 @@ class Migrator
     protected function runMigration(string $file, string $method): void
     {
         $path = $this->migrationsPath . '/' . $file . '.php';
-        
+
         if (!file_exists($path)) {
             throw new \RuntimeException("Migration file not found: {$path}");
         }
@@ -154,7 +154,7 @@ class Migrator
         // Use require to get the returned migration instance
         // Each migration file returns a new instance, so we can run it multiple times
         $migration = require $path;
-        
+
         if ($migration instanceof Migration) {
             $migration->$method();
         }
@@ -167,12 +167,12 @@ class Migrator
     {
         // Remove date prefix (e.g., 2026_01_12_000001_)
         $name = preg_replace('/^\d{4}_\d{2}_\d{2}_\d{6}_/', '', $file);
-        
+
         // Convert to PascalCase
         $name = str_replace('_', ' ', $name);
         $name = ucwords($name);
         $name = str_replace(' ', '', $name);
-        
+
         return "App\\Migrations\\{$name}";
     }
 
@@ -250,7 +250,7 @@ class Migrator
     {
         $batch = Database::select("SELECT MAX(batch) as max_batch FROM {$this->migrationsTable}");
         $maxBatch = $batch[0]['max_batch'] ?? 0;
-        
+
         if ($maxBatch === 0) {
             return [];
         }

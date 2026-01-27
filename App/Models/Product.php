@@ -19,7 +19,7 @@ class Product extends Model
 
         $products = Database::select(
             "SELECT * FROM products LIMIT ? OFFSET ?",
-            [$perPage, $offset]
+            [(int) $perPage, (int) $offset]
         );
 
         $total = self::count();
@@ -71,7 +71,7 @@ class Product extends Model
             GROUP BY products.id, products.name, products.price
             ORDER BY total_sold DESC
             LIMIT ?",
-            [$limit]
+            [(int) $limit]
         );
     }
 }

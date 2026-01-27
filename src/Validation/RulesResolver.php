@@ -2,13 +2,14 @@
 
 namespace Elmasry\Validation;
 
-trait RulesResolver
+class RulesResolver
 {
     public static function make($rules)
     {
         if (is_string($rules)) {
             $rules = (array) (str_contains($rules, '|') ? explode('|', $rules) : $rules);
         }
+        $rules = array_filter($rules); // Remove empty values
 
         return array_map(function ($rule) {
             if (is_string($rule)) {

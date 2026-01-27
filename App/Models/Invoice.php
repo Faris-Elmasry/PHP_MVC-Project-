@@ -167,7 +167,7 @@ class Invoice extends Model
             JOIN users ON invoices.user_id = users.id 
             ORDER BY invoices.created_at DESC 
             LIMIT ?",
-            [$limit]
+            [(int) $limit]
         );
     }
 }

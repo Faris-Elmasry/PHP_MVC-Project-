@@ -20,7 +20,7 @@ class Blueprint
     public function id(string $column = 'id'): self
     {
         $this->primaryKey = $column;
-        $this->columns[] = "{$column} INTEGER PRIMARY KEY AUTOINCREMENT";
+        $this->columns[] = "{$column} INT AUTO_INCREMENT PRIMARY KEY";
         return $this;
     }
 
@@ -29,7 +29,7 @@ class Blueprint
      */
     public function string(string $column, int $length = 255): ColumnDefinition
     {
-        return $this->addColumn($column, "TEXT");
+        return $this->addColumn($column, "VARCHAR({$length})");
     }
 
     /**
@@ -212,7 +212,10 @@ class ColumnDefinition
      */
     public function default($value): self
     {
-        $this->default = $value;
+        if (is_bool($value)) {
+            $value = $value ? 1 : 0;
+        }
+        $this->default = (string) $value;
         return $this;
     }
 
@@ -222,15 +225,15 @@ class ColumnDefinition
     public function __destruct()
     {
         $definition = "{$this->column} {$this->type}";
-        
+
         if (!$this->nullable) {
             $definition .= " NOT NULL";
         }
-        
+
         if ($this->unique) {
             $definition .= " UNIQUE";
         }
-        
+
         if ($this->default !== null) {
             if (is_string($this->default) && $this->default !== 'CURRENT_TIMESTAMP') {
                 $definition .= " DEFAULT '{$this->default}'";
@@ -238,7 +241,7 @@ class ColumnDefinition
                 $definition .= " DEFAULT {$this->default}";
             }
         }
-        
+
         $this->blueprint->addColumnDefinition($definition);
     }
 }
@@ -267,7 +270,7 @@ class ForeignKeyDefinition
             // Auto-detect table from column name (user_id -> users)
             $table = str_replace('_id', 's', $this->column);
         }
-        
+
         $this->blueprint->addForeignKey($this->column, $column, $table, $this->onDelete);
         return $this;
     }
