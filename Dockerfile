@@ -38,29 +38,29 @@ RUN echo 'server { \n\
     index index.php index.html; \n\
     \n\
     location / { \n\
-        try_files $uri $uri/ /index.php?$query_string; \n\
+    try_files $uri $uri/ /index.php?$query_string; \n\
     } \n\
     \n\
     location ~ \.php$ { \n\
-        fastcgi_pass 127.0.0.1:9000; \n\
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; \n\
-        include fastcgi_params; \n\
+    fastcgi_pass 127.0.0.1:9000; \n\
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; \n\
+    include fastcgi_params; \n\
     } \n\
-}' > /etc/nginx/sites-available/default
+    }' > /etc/nginx/sites-available/default
 
 # Copy supervisor configuration
 RUN echo '[supervisord] \n\
-nodaemon=true \n\
-\n\
-[program:php-fpm] \n\
-command=php-fpm -F \n\
-autostart=true \n\
-autorestart=true \n\
-\n\
-[program:nginx] \n\
-command=nginx -g "daemon off;" \n\
-autostart=true \n\
-autorestart=true' > /etc/supervisor/conf.d/supervisord.conf
+    nodaemon=true \n\
+    \n\
+    [program:php-fpm] \n\
+    command=php-fpm -F \n\
+    autostart=true \n\
+    autorestart=true \n\
+    \n\
+    [program:nginx] \n\
+    command=nginx -g "daemon off;" \n\
+    autostart=true \n\
+    autorestart=true' > /etc/supervisor/conf.d/supervisord.conf
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
